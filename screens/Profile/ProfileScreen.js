@@ -1,26 +1,29 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image, SafeAreaView } from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons'; // Importing icon library
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 const ProfileScreen = () => {
   const [orderHistory] = useState([
-    { id: 1, name: 'Veg Fix Thali', date: '2024-12-01', price: 150, status: 'Delivered' },
-    { id: 2, name: 'Das Kitchen', date: '2024-12-05', price: 100, status: 'Pending' },
+    { id: 1, name: 'Hot Dogg', date: '2024-12-01', price: 150, status: 'Delivered' },
+    { id: 2, name: 'Alex Eatery', date: '2024-12-05', price: 100, status: 'Pending' },
   ]);
   const [favorites] = useState([
-    { name: 'Veg Fix Thali', price: 150 },
-    { name: 'Das Kitchen', price: 100 },
+    { name: 'Hot Dogg', price: 150 },
+    { name: 'Cupcake House', price: 100 },
   ]);
   const [address] = useState('Ziffy HQ, Panipokhari, Kathmandu');
   const [coupons] = useState([
     { code: 'GAME10', discount: '10%', used: false },
     { code: 'NEWYEAR20', discount: '20%', used: true },
   ]);
+  const [coins, setCoins] = useState(56);
 
   const [showOrderHistory, setShowOrderHistory] = useState(false);
   const [showFavorites, setShowFavorites] = useState(false);
   const [showAddress, setShowAddress] = useState(false);
   const [showCoupons, setShowCoupons] = useState(false);
+  const [showCoins, setShowCoins] = useState(false);
+  const [showCustomerSupport, setShowCustomerSupport] = useState(false); // State for customer support
 
   return (
     <SafeAreaView style={styles.container}>
@@ -33,6 +36,19 @@ const ProfileScreen = () => {
           <Text style={styles.userName}>John Doe</Text>
           <Text style={styles.userEmail}>john.doe@example.com</Text>
           <Text style={styles.userPhone}>+977 9841753555</Text>
+        </View>
+
+        {/* My Coins Section */}
+        <View style={styles.card}>
+          <TouchableOpacity style={styles.section} onPress={() => setShowCoins(!showCoins)}>
+            <Icon name="attach-money" size={24} color="#4caf50" style={styles.icon} />
+            <Text style={styles.sectionTitle}>My Coins</Text>
+          </TouchableOpacity>
+          {showCoins && (
+            <View style={styles.dropdown}>
+              <Text style={styles.sectionContent}>You have {coins} coins.</Text>
+            </View>
+          )}
         </View>
 
         {/* My Favorites Section */}
@@ -94,6 +110,20 @@ const ProfileScreen = () => {
                 </Text>
               </View>
             ))}
+        </View>
+
+        {/* Customer Support Section */}
+        <View style={styles.card}>
+          <TouchableOpacity style={styles.section} onPress={() => setShowCustomerSupport(!showCustomerSupport)}>
+            <Icon name="headset-mic" size={24} color="#4caf50" style={styles.icon} />
+            <Text style={styles.sectionTitle}>Customer Support</Text>
+          </TouchableOpacity>
+          {showCustomerSupport && (
+            <View style={styles.dropdown}>
+              <Text style={styles.sectionContent}>Phone: +977 1234567890</Text>
+              <Text style={styles.sectionContent}>Email: support@8848.com</Text>
+            </View>
+          )}
         </View>
       </ScrollView>
 
@@ -215,7 +245,7 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     alignItems: 'center',
     justifyContent: 'flex-end',
-    paddingHorizontal: 20, // Added padding to prevent buttons from touching the edges
+    paddingHorizontal: 20,
   },
   buttonRow: {
     flexDirection: 'row',

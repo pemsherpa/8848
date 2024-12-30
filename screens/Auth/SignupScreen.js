@@ -3,11 +3,19 @@ import { View, TextInput, TouchableOpacity, Text, StyleSheet, ScrollView, Alert 
 
 const SignupScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleSignup = async () => {
-    if (!email || !password) {
-      Alert.alert('Error', 'Please enter both email and password');
+    if (!email || !name || !phoneNumber || !password || !confirmPassword) {
+      Alert.alert('Error', 'Please fill in all fields');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      Alert.alert('Error', 'Passwords do not match');
       return;
     }
 
@@ -20,6 +28,8 @@ const SignupScreen = ({ navigation }) => {
         },
         body: JSON.stringify({
           email,
+          name,
+          phoneNumber,
           password,
         }),
       });
@@ -42,6 +52,14 @@ const SignupScreen = ({ navigation }) => {
     <ScrollView style={styles.container}>
       <Text style={styles.header}>Create Your Account</Text>
 
+      {/* Name input field */}
+      <TextInput
+        style={styles.input}
+        placeholder="Full Name"
+        value={name}
+        onChangeText={setName}
+      />
+
       {/* Email input field */}
       <TextInput
         style={styles.input}
@@ -52,6 +70,15 @@ const SignupScreen = ({ navigation }) => {
         autoCapitalize="none"
       />
 
+      {/* Phone number input field */}
+      <TextInput
+        style={styles.input}
+        placeholder="Phone Number"
+        value={phoneNumber}
+        onChangeText={setPhoneNumber}
+        keyboardType="phone-pad"
+      />
+
       {/* Password input field */}
       <TextInput
         style={styles.input}
@@ -59,6 +86,15 @@ const SignupScreen = ({ navigation }) => {
         value={password}
         secureTextEntry
         onChangeText={setPassword}
+      />
+
+      {/* Confirm Password input field */}
+      <TextInput
+        style={styles.input}
+        placeholder="Confirm Password"
+        value={confirmPassword}
+        secureTextEntry
+        onChangeText={setConfirmPassword}
       />
 
       {/* Sign up button */}

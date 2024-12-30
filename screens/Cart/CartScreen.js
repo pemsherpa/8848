@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { ScrollView, View, Text, Button, StyleSheet, SafeAreaView, Alert, TouchableOpacity } from 'react-native';
+import { ScrollView, View, Text, Button, StyleSheet, SafeAreaView, Alert, TouchableOpacity, TextInput } from 'react-native';
 
 const CartScreen = ({ navigation }) => {
-  const cartItems = [{ name: 'Das Kitchen', price: 100 }, { name: 'Veg Fix Thali', price: 100 }];
+  const cartItems = [{ name: 'Hot Dogg', price: 175 }, { name: 'Yummy Burger', price: 200 }];
   const [donate, setDonate] = useState(false);
+  const [coupon, setCoupon] = useState(""); // State for coupon code
 
   // Delivery details (can be dynamically passed or fetched from a user profile)
   const deliveryAddress = {
@@ -32,6 +33,10 @@ const CartScreen = ({ navigation }) => {
     );
   };
 
+  const handleCouponChange = (text) => {
+    setCoupon(text); // Update coupon code
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
@@ -50,6 +55,20 @@ const CartScreen = ({ navigation }) => {
           <TouchableOpacity onPress={handleDonation} style={styles.donateButton}>
             <Text style={styles.donateButtonText}>Donate 1 Rs to Feed Nepal</Text>
           </TouchableOpacity>
+
+          {/* Coupon Input and Apply Button */}
+          <View style={styles.couponContainer}>
+            <TextInput
+              style={styles.couponInput}
+              placeholder="Apply Coupon or Voucher"
+              value={coupon}
+              onChangeText={handleCouponChange}
+              placeholderTextColor="#888"
+            />
+            <TouchableOpacity style={styles.applyButton}>
+              <Text style={styles.applyButtonText}>Apply</Text>
+            </TouchableOpacity>
+          </View>
 
           {/* Total Price */}
           <View style={styles.totalContainer}>
@@ -123,7 +142,7 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   donateButton: {
-    backgroundColor: '#FF0000', // Red background for the donate button
+    backgroundColor: '#D14D58', // Cherry red background for the donate button
     padding: 10,
     borderRadius: 5,
     marginVertical: 10,
@@ -134,13 +153,40 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 16,
   },
+  couponContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 15,
+  },
+  couponInput: {
+    height: 40,
+    flex: 1,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingLeft: 10,
+    fontSize: 16,
+  },
+  applyButton: {
+    backgroundColor: '#D14D58', // Cherry red background for the apply button
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 5,
+    marginLeft: 10,
+    alignItems: 'center',
+  },
+  applyButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
   totalContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 20,
     paddingTop: 10,
     borderTopWidth: 2,
-    borderTopColor: '#FF0000', // Red border for the total section
+    borderTopColor: '#D14D58', // Cherry red border for the total section
   },
   totalLabel: {
     fontSize: 22,
@@ -178,7 +224,7 @@ const styles = StyleSheet.create({
     borderTopColor: '#ddd',
   },
   paymentButton: {
-    backgroundColor: '#FF0000', // Red background for the payment button
+    backgroundColor: '#D14D58', // Cherry red background for the payment button
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 5,
