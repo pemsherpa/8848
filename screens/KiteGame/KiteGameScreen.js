@@ -139,14 +139,14 @@ const styles = StyleSheet.create({
   },
   statText: {
     position: 'absolute',
-    color: '#000', // Change text color to black for better contrast
-    fontSize: 20, // Smaller font for stats
+    color: '#000', 
+    fontSize: 20, 
     fontWeight: 'bold',
-    backgroundColor: '#FFFAE5', // Light beige/yellow background
-    paddingHorizontal: 15, // Add horizontal padding
-    paddingVertical: 5, // Add vertical padding
-    borderRadius: 20, // Make the container pill-shaped
-    overflow: 'hidden', // Ensure the pill shape
+    backgroundColor: '#FFFAE5', 
+    paddingHorizontal: 15, 
+    paddingVertical: 5, 
+    borderRadius: 20, 
+    overflow: 'hidden',
   },
   timer: {
     bottom: 20,
