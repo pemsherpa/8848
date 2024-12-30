@@ -4,27 +4,19 @@ Ziffy is a feature-rich food delivery application built with React Native and Ex
 
 ## 🚀 Features
 
-- 🔐 User Authentication (Login/Signup)
+- 🔐 Login/Signup
 - 🍔 Food Ordering System
 - 🛒 Cart Management
-- 💳 Secure Payment Processing
-- 🚚 Real-time Delivery Tracking
-- 💬 Chatbot Support
 - 🎮 Interactive Kite Game
 - ♻️ Food Rescue Initiative
 - 🥬 Veg/Non-veg Filter
 - 👤 User Profile Management
 
-## 📱 Screenshots
-
-[Please add screenshots of your key screens here]
-
 ## 🛠️ Tech Stack
 
 - React Native
 - Expo Go
-- React Navigation
-- Context API for state management
+- Node
 
 ## 🏃‍♂️ Getting Started
 
@@ -85,10 +77,3 @@ npx expo start
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-## 📝 License
-
-[Add your license information here]
-
-## 👥 Contact
-
-[Add your contact information here]
