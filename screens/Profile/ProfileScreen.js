@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image, SafeAreaView } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons'; // Importing icon library
 
 const ProfileScreen = () => {
@@ -23,7 +23,7 @@ const ProfileScreen = () => {
   const [showCoupons, setShowCoupons] = useState(false);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.profileContainer}>
           <Image
@@ -36,63 +36,65 @@ const ProfileScreen = () => {
         </View>
 
         {/* My Favorites Section */}
-        <TouchableOpacity style={styles.section} onPress={() => setShowFavorites(!showFavorites)}>
-          <Icon name="favorite" size={24} color="#4caf50" style={styles.icon} />
-          <Text style={styles.sectionTitle}>My Favorites</Text>
-        </TouchableOpacity>
-        {showFavorites && (
-          <View style={styles.dropdown}>
-            {favorites.map((favorite, index) => (
-              <Text key={index} style={styles.sectionContent}>
-                {favorite.name} - ₹{favorite.price}
-              </Text>
-            ))}
-          </View>
-        )}
-
-        <View style={styles.breakLine} />
+        <View style={styles.card}>
+          <TouchableOpacity style={styles.section} onPress={() => setShowFavorites(!showFavorites)}>
+            <Icon name="favorite" size={24} color="#4caf50" style={styles.icon} />
+            <Text style={styles.sectionTitle}>My Favorites</Text>
+          </TouchableOpacity>
+          {showFavorites && (
+            <View style={styles.dropdown}>
+              {favorites.map((favorite, index) => (
+                <Text key={index} style={styles.sectionContent}>
+                  {favorite.name} - ₹{favorite.price}
+                </Text>
+              ))}
+            </View>
+          )}
+        </View>
 
         {/* Order History Section */}
-        <TouchableOpacity style={styles.section} onPress={() => setShowOrderHistory(!showOrderHistory)}>
-          <Icon name="history" size={24} color="#4caf50" style={styles.icon} />
-          <Text style={styles.sectionTitle}>Order History</Text>
-        </TouchableOpacity>
-        {showOrderHistory &&
-          orderHistory.map((order) => (
-            <View key={order.id} style={styles.historyItem}>
-              <Text style={styles.historyText}>{order.name}</Text>
-              <Text style={styles.historyText}>₹{order.price}</Text>
-              <Text style={styles.historyDate}>{order.date}</Text>
-              <Text style={styles.orderStatus}>{order.status}</Text>
-            </View>
-          ))}
-        
-        <View style={styles.breakLine} />
+        <View style={styles.card}>
+          <TouchableOpacity style={styles.section} onPress={() => setShowOrderHistory(!showOrderHistory)}>
+            <Icon name="history" size={24} color="#4caf50" style={styles.icon} />
+            <Text style={styles.sectionTitle}>Order History</Text>
+          </TouchableOpacity>
+          {showOrderHistory &&
+            orderHistory.map((order) => (
+              <View key={order.id} style={styles.historyItem}>
+                <Text style={styles.historyText}>{order.name}</Text>
+                <Text style={styles.historyText}>₹{order.price}</Text>
+                <Text style={styles.historyDate}>{order.date}</Text>
+                <Text style={styles.orderStatus}>{order.status}</Text>
+              </View>
+            ))}
+        </View>
 
         {/* Manage Delivery Address Section */}
-        <TouchableOpacity style={styles.section} onPress={() => setShowAddress(!showAddress)}>
-          <Icon name="location-on" size={24} color="#4caf50" style={styles.icon} />
-          <Text style={styles.sectionTitle}>Manage Delivery Address</Text>
-        </TouchableOpacity>
-        {showAddress && <Text style={styles.sectionContent}>{address}</Text>}
-
-        <View style={styles.breakLine} />
+        <View style={styles.card}>
+          <TouchableOpacity style={styles.section} onPress={() => setShowAddress(!showAddress)}>
+            <Icon name="location-on" size={24} color="#4caf50" style={styles.icon} />
+            <Text style={styles.sectionTitle}>Manage Delivery Address</Text>
+          </TouchableOpacity>
+          {showAddress && <Text style={styles.sectionContent}>{address}</Text>}
+        </View>
 
         {/* Voucher Vault Section */}
-        <TouchableOpacity style={styles.section} onPress={() => setShowCoupons(!showCoupons)}>
-          <Icon name="redeem" size={24} color="#4caf50" style={styles.icon} />
-          <Text style={styles.sectionTitle}>Voucher Vault</Text>
-        </TouchableOpacity>
-        {showCoupons &&
-          coupons.map((coupon) => (
-            <View key={coupon.code} style={styles.couponItem}>
-              <Text style={styles.couponText}>{coupon.code}</Text>
-              <Text style={styles.couponText}>Discount: {coupon.discount}</Text>
-              <Text style={coupon.used ? styles.usedCoupon : styles.activeCoupon}>
-                {coupon.used ? 'Used' : 'Active'}
-              </Text>
-            </View>
-          ))}
+        <View style={styles.card}>
+          <TouchableOpacity style={styles.section} onPress={() => setShowCoupons(!showCoupons)}>
+            <Icon name="redeem" size={24} color="#4caf50" style={styles.icon} />
+            <Text style={styles.sectionTitle}>Voucher Vault</Text>
+          </TouchableOpacity>
+          {showCoupons &&
+            coupons.map((coupon) => (
+              <View key={coupon.code} style={styles.couponItem}>
+                <Text style={styles.couponText}>{coupon.code}</Text>
+                <Text style={styles.couponText}>Discount: {coupon.discount}</Text>
+                <Text style={coupon.used ? styles.usedCoupon : styles.activeCoupon}>
+                  {coupon.used ? 'Used' : 'Active'}
+                </Text>
+              </View>
+            ))}
+        </View>
       </ScrollView>
 
       {/* Buttons at the bottom */}
@@ -107,7 +109,7 @@ const ProfileScreen = () => {
           </TouchableOpacity>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -145,6 +147,17 @@ const styles = StyleSheet.create({
     color: '#555',
     marginBottom: 20,
   },
+  card: {
+    backgroundColor: '#f9f9f9',
+    borderRadius: 10,
+    padding: 15,
+    marginBottom: 20,
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+  },
   section: {
     marginVertical: 15,
     flexDirection: 'row',
@@ -179,7 +192,7 @@ const styles = StyleSheet.create({
   orderStatus: {
     fontSize: 14,
     fontWeight: 'bold',
-    color: '#4caf50', // Green for Delivered
+    color: '#4caf50',
   },
   couponItem: {
     paddingVertical: 10,
@@ -202,6 +215,7 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     alignItems: 'center',
     justifyContent: 'flex-end',
+    paddingHorizontal: 20, // Added padding to prevent buttons from touching the edges
   },
   buttonRow: {
     flexDirection: 'row',
@@ -210,12 +224,13 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#D32F2F',
-    paddingVertical: 8,
-    paddingHorizontal: 25,
+    paddingVertical: 6,
+    paddingHorizontal: 20,
     borderRadius: 25,
-    marginVertical: 10,
+    marginVertical: 8,
     width: '45%',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   buttonText: {
     fontSize: 14,
@@ -228,11 +243,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
     borderRadius: 5,
     marginTop: 5,
-  },
-  breakLine: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
-    marginVertical: 15,
   },
 });
 

@@ -14,7 +14,7 @@ const AppNavigator = () => {
     <Tab.Navigator
       screenOptions={{
         headerShown: false, // Hide header for all screens (optional)
-        tabBarActiveTintColor: 'tomato', // Active tab icon color
+        tabBarActiveTintColor: 'red', // Active tab icon color (theme color)
         tabBarInactiveTintColor: 'gray', // Inactive tab icon color
       }}
     >
