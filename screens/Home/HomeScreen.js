@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useColorScheme } from "react-native";
+import { CartContext } from "../../context/CartContext"; 
 import Alex from "../../assets/images/AlexEatery.png";
 import hotDog from "../../assets/images/hotdog.png";
 import burger from "../../assets/images/burger.png";
@@ -20,9 +21,10 @@ import {
 } from "react-native";
 
 const HomeScreen = ({ navigation }) => {
-  const scheme = useColorScheme(); // Detect current theme (dark or light)
-  const [vegMode, setVegMode] = useState(false); // Veg Mode toggle state
-  const [searchQuery, setSearchQuery] = useState(""); // Search input state
+  const scheme = useColorScheme(); 
+  const { addToCart } = useContext(CartContext); 
+  const [vegMode, setVegMode] = useState(false); 
+  const [searchQuery, setSearchQuery] = useState(""); 
 
   const handleSearchChange = (text) => {
     setSearchQuery(text);
@@ -37,7 +39,7 @@ const HomeScreen = ({ navigation }) => {
       id: 1,
       name: "Alex Eatery",
       details: "North Indian, Snacks",
-      price: "₹100",
+      price: "100",
       time: "15 mins",
       distance: "1 km",
       image: Alex,
@@ -47,7 +49,7 @@ const HomeScreen = ({ navigation }) => {
       id: 2,
       name: "Hot Dogg",
       details: "Pizza, Fast Food",
-      price: "₹175",
+      price: "175",
       time: "25 mins",
       distance: "1.5 km",
       image: hotDog,
@@ -57,7 +59,7 @@ const HomeScreen = ({ navigation }) => {
       id: 3,
       name: "Cupcake House",
       details: "Bakery, Cafe",
-      price: "₹100",
+      price: "100",
       time: "35 mins",
       distance: "2.5 km",
       image: cake,
@@ -67,7 +69,7 @@ const HomeScreen = ({ navigation }) => {
       id: 4,
       name: "Yummy Burger",
       details: "Burgers",
-      price: "₹200",
+      price: "200",
       time: "40 mins",
       distance: "3 km",
       image: burger,
@@ -77,7 +79,7 @@ const HomeScreen = ({ navigation }) => {
       id: 5,
       name: "Tandoori Feast",
       details: "North Indian, Tandoor",
-      price: "₹150",
+      price: "150",
       time: "20 mins",
       distance: "1.2 km",
       image: tandoori,
@@ -87,7 +89,7 @@ const HomeScreen = ({ navigation }) => {
       id: 6,
       name: "Salad Bar",
       details: "Vegies, Salad",
-      price: "₹300",
+      price: "300",
       time: "45 mins",
       distance: "4 km",
       image: veg,
@@ -128,26 +130,8 @@ const HomeScreen = ({ navigation }) => {
                 { color: scheme === "dark" ? "#ccc" : "#777" },
               ]}
             >
-              Ziffy hq, Panipokhari
+              Ziffy HQ, Panipokhari
             </Text>
-          </View>
-          <View style={styles.icons}>
-            <TouchableOpacity onPress={() => navigation.navigate("Cart")}>
-              <Text
-                style={[
-                  styles.iconText,
-                  { color: scheme === "dark" ? "#fff" : "#000" },
-                ]}
-              ></Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
-              <Text
-                style={[
-                  styles.iconText,
-                  { color: scheme === "dark" ? "#fff" : "#000" },
-                ]}
-              ></Text>
-            </TouchableOpacity>
           </View>
         </View>
 
@@ -191,7 +175,7 @@ const HomeScreen = ({ navigation }) => {
             { color: scheme === "dark" ? "#fff" : "#000" },
           ]}
         >
-          -------Popular Restaurants-------
+          ------- Popular Restaurants -------
         </Text>
         <View style={styles.restaurantSection}>
           {filteredRestaurants.map((restaurant) => (
@@ -230,11 +214,14 @@ const HomeScreen = ({ navigation }) => {
                     {restaurant.time} | {restaurant.distance}
                   </Text>
                 </View>
-                <TouchableOpacity style={styles.addButton}>
+                <TouchableOpacity
+                  style={styles.addButton}
+                  onPress={() => addToCart(restaurant)} 
+                >
                   <Text style={styles.addButtonText}>+</Text>
                 </TouchableOpacity>
               </View>
-              <Text style={styles.restaurantPrice}>{restaurant.price}</Text>
+              <Text style={styles.restaurantPrice}>Rs {restaurant.price}</Text>
             </View>
           ))}
         </View>
@@ -246,45 +233,42 @@ const HomeScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#fff",
   },
   scrollContainer: {
     paddingBottom: 20,
   },
   header: {
-    padding: 16,
+    padding: 20,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
   locationText: {
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: "bold",
+    color: "#D32F2F",
   },
   subLocationText: {
     fontSize: 14,
-  },
-  icons: {
-    flexDirection: "row",
-    gap: 16,
-  },
-  iconText: {
-    fontSize: 20,
+    color: "#777",
   },
   searchVegContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginHorizontal: 16,
-    marginTop: 16, // Added spacing above search bar
-    marginBottom: 16, // Added spacing below search bar
+    marginHorizontal: 20,
+    marginTop: 20,
+    marginBottom: 10,
     justifyContent: "space-between",
   },
   searchInput: {
     flex: 1,
     fontSize: 16,
-    paddingLeft: 8,
-    marginRight: 8,
+    paddingLeft: 10,
+    paddingVertical: 12,
     borderRadius: 8,
-    padding: 8,
+    borderWidth: 1,
+    borderColor: "#ddd",
   },
   vegModeContainer: {
     flexDirection: "row",
@@ -297,52 +281,63 @@ const styles = StyleSheet.create({
   },
   promotionalImage: {
     width: "100%",
-    height: 150,
+    height: 180,
     marginBottom: 20,
+    borderRadius: 10,
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "bold",
-    marginHorizontal: 16,
-    marginBottom: 10,
+    marginHorizontal: 20,
+    marginBottom: 15,
     textAlign: "center",
+    color: "#D32F2F",
   },
   restaurantSection: {
-    marginHorizontal: 16,
+    marginHorizontal: 20,
   },
   restaurantCard: {
     backgroundColor: "#fff",
-    borderRadius: 8,
+    borderRadius: 10,
     overflow: "hidden",
-    marginBottom: 16,
+    marginBottom: 20,
     borderWidth: 1,
     borderColor: "#ddd",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 3,
   },
   restaurantCardImage: {
     width: "100%",
-    height: 120,
+    height: 140,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ddd",
   },
   restaurantCardInfo: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    padding: 12,
+    padding: 16,
   },
   restaurantText: {
     flex: 1,
-    marginRight: 12,
+    marginRight: 16,
   },
   restaurantName: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: "bold",
-    marginBottom: 4,
+    color: "#D32F2F",
   },
   restaurantDetails: {
     fontSize: 14,
     marginBottom: 4,
+    color: "#777",
   },
   restaurantMeta: {
     fontSize: 12,
+    color: "#999",
   },
   addButton: {
     backgroundColor: "#D32F2F",
@@ -358,9 +353,9 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
   restaurantPrice: {
-    paddingHorizontal: 12,
-    paddingBottom: 12,
-    fontSize: 16,
+    paddingHorizontal: 16,
+    paddingBottom: 16,
+    fontSize: 18,
     fontWeight: "bold",
     color: "#D32F2F",
   },

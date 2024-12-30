@@ -1,23 +1,32 @@
-import React, { useState } from 'react';
-import { ScrollView, View, Text, Button, StyleSheet, SafeAreaView, Alert, TouchableOpacity, TextInput } from 'react-native';
+import React, { useContext, useState } from "react";
+import {
+  ScrollView,
+  View,
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+  TextInput,
+  Alert,
+} from "react-native";
+import { CartContext } from "../../context/CartContext";
 
 const CartScreen = ({ navigation }) => {
-  const cartItems = [{ name: 'Hot Dogg', price: 175 }, { name: 'Yummy Burger', price: 200 }];
+  const { cart, getTotalPrice } = useContext(CartContext);
   const [donate, setDonate] = useState(false);
   const [coupon, setCoupon] = useState("");
-  const [useCoins, setUseCoins] = useState(false); // State for using coins
+  const [useCoins, setUseCoins] = useState(false);
   const [coinBalance, setCoinBalance] = useState(10); // Example coin balance
 
-  // Delivery details (can be dynamically passed or fetched from a user profile)
   const deliveryAddress = {
-    address: '123, Kathmandu, Nepal',
-    phoneNumber: '9800000000',
+    address: "123, Kathmandu, Nepal",
+    phoneNumber: "9800000000",
   };
 
-  // Calculate the total
-  const total = cartItems.reduce((sum, item) => sum + item.price, 0);
-  const finalTotal = donate ? total + 1 : total; // Add 1 Rs if donation is selected
-  const discountedTotal = useCoins ? finalTotal - 10 : finalTotal; // Apply 10 Rs discount if coins are used
+  // Ensure getTotalPrice returns a valid number
+  const total = getTotalPrice() || 0;
+  const finalTotal = donate ? total + 1 : total;
+  const discountedTotal = Math.max(0, useCoins ? finalTotal - 10 : finalTotal); // Ensures total is not negative
 
   const handleDonation = () => {
     Alert.alert(
@@ -37,7 +46,7 @@ const CartScreen = ({ navigation }) => {
   };
 
   const handleCouponChange = (text) => {
-    setCoupon(text); // Update coupon code
+    setCoupon(text);
   };
 
   const handleUseCoins = () => {
@@ -49,7 +58,7 @@ const CartScreen = ({ navigation }) => {
           text: "Yes",
           onPress: () => {
             setUseCoins(true);
-            setCoinBalance(0); // Set coin balance to 0 after using coins
+            setCoinBalance(0);
           },
         },
         {
@@ -73,12 +82,12 @@ const CartScreen = ({ navigation }) => {
               <Text style={styles.coinButtonText}>Use Coins</Text>
             </TouchableOpacity>
           </View>
-          
+
           {/* Cart Items */}
-          {cartItems.map((item, index) => (
+          {cart.map((item, index) => (
             <View key={index} style={styles.item}>
               <Text style={styles.itemText}>{item.name}</Text>
-              <Text style={styles.itemPrice}>₹{item.price}</Text>
+              <Text style={styles.itemPrice}>Rs. {item.price}</Text>
             </View>
           ))}
 
@@ -87,7 +96,7 @@ const CartScreen = ({ navigation }) => {
             <Text style={styles.donateButtonText}>Donate 1 Rs to Feed Nepal</Text>
           </TouchableOpacity>
 
-          {/* Coupon Input and Apply Button */}
+          {/* Coupon Input */}
           <View style={styles.couponContainer}>
             <TextInput
               style={styles.couponInput}
@@ -104,7 +113,7 @@ const CartScreen = ({ navigation }) => {
           {/* Total Price */}
           <View style={styles.totalContainer}>
             <Text style={styles.totalLabel}>Total:</Text>
-            <Text style={styles.totalPrice}>₹{discountedTotal}</Text>
+            <Text style={styles.totalPrice}>Rs. {discountedTotal}</Text>
           </View>
 
           {/* Delivery Details */}
@@ -113,15 +122,14 @@ const CartScreen = ({ navigation }) => {
             <Text style={styles.deliveryText}>{deliveryAddress.address}</Text>
             <Text style={styles.deliveryText}>Phone: {deliveryAddress.phoneNumber}</Text>
           </View>
-
         </View>
       </ScrollView>
 
       {/* Proceed to Payment Button */}
       <View style={styles.buttonContainer}>
-        <TouchableOpacity 
-          style={styles.paymentButton} 
-          onPress={() => navigation.navigate('Payment')}
+        <TouchableOpacity
+          style={styles.paymentButton}
+          onPress={() => navigation.navigate("Payment")}
         >
           <Text style={styles.paymentButtonText}>Proceed to Payment</Text>
         </TouchableOpacity>
@@ -133,17 +141,17 @@ const CartScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: "#f5f5f5",
   },
   scrollContainer: {
     paddingHorizontal: 20,
     paddingBottom: 20,
   },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     padding: 20,
     borderRadius: 10,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 4 },
@@ -151,140 +159,140 @@ const styles = StyleSheet.create({
   },
   cardTitle: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
+    color: "#333",
     marginBottom: 15,
-    textAlign: 'center',
+    textAlign: "center",
   },
   coinContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginBottom: 15,
-    alignItems: 'center',
+    alignItems: "center",
   },
   coinText: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
+    color: "#333",
   },
   coinButton: {
-    backgroundColor: '#D14D58',
+    backgroundColor: "#FF0000",
     padding: 8,
     borderRadius: 5,
   },
   coinButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    color: "#fff",
+    fontWeight: "bold",
   },
   item: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingVertical: 10,
     borderBottomWidth: 1,
     borderBottomColor: "#ddd",
   },
   itemText: {
     fontSize: 18,
-    color: '#333',
+    color: "#333",
   },
   itemPrice: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
+    color: "#333",
   },
   donateButton: {
-    backgroundColor: '#D14D58',
+    backgroundColor: "#FF0000",
     padding: 10,
     borderRadius: 5,
     marginVertical: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   donateButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    color: "#fff",
+    fontWeight: "bold",
     fontSize: 16,
   },
   couponContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginVertical: 15,
   },
   couponInput: {
     height: 40,
     flex: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
     borderWidth: 1,
     borderRadius: 5,
     paddingLeft: 10,
     fontSize: 16,
   },
   applyButton: {
-    backgroundColor: '#D14D58',
+    backgroundColor: "#FF0000",
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderRadius: 5,
     marginLeft: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   applyButtonText: {
-    color: '#fff',
-    fontWeight: 'bold',
+    color: "#fff",
+    fontWeight: "bold",
     fontSize: 16,
   },
   totalContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginTop: 20,
     paddingTop: 10,
     borderTopWidth: 2,
-    borderTopColor: '#D14D58',
+    borderTopColor: "#FF0000",
   },
   totalLabel: {
     fontSize: 22,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
+    color: "#333",
   },
   totalPrice: {
     fontSize: 22,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
+    color: "#FF0000",
   },
   deliveryContainer: {
     marginTop: 20,
     paddingVertical: 10,
     paddingHorizontal: 20,
-    backgroundColor: '#f8f8f8',
+    backgroundColor: "#f8f8f8",
     borderRadius: 5,
-    alignItems: 'flex-start',
+    alignItems: "flex-start",
   },
   deliveryTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
+    color: "#333",
     marginBottom: 5,
   },
   deliveryText: {
     fontSize: 16,
-    color: '#555',
+    color: "#555",
     marginBottom: 5,
   },
   buttonContainer: {
     padding: 20,
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderTopWidth: 1,
-    borderTopColor: '#ddd',
+    borderTopColor: "#ddd",
   },
   paymentButton: {
-    backgroundColor: '#D14D58',
+    backgroundColor: "#FF0000",
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 5,
-    alignItems: 'center',
+    alignItems: "center",
   },
   paymentButtonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
 });
 
