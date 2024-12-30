@@ -65,13 +65,13 @@ const styles = StyleSheet.create({
   header: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#D32F2F',  // Cherry red color
+    color: '#D32F2F',  
     marginBottom: 40,
     textAlign: 'center',
   },
   input: {
     height: 50,
-    borderColor: '#D32F2F',  // Cherry red color
+    borderColor: '#D32F2F',  
     borderWidth: 1,
     borderRadius: 8,
     paddingLeft: 16,
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   button: {
-    backgroundColor: '#D32F2F',  // Cherry red color
+    backgroundColor: '#D32F2F',  
     paddingVertical: 14,
     borderRadius: 8,
     alignItems: 'center',
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   },
   signupLink: {
     fontSize: 16,
-    color: '#D32F2F',  // Cherry red color
+    color: '#D32F2F', 
     fontWeight: 'bold',
   },
 });

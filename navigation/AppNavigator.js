@@ -59,7 +59,7 @@ const AppNavigator = () => {
         component={KiteGameScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="airplane" size={size} color={color} /> // Kite Game icon (airplane as a metaphor)
+            <Ionicons name="airplane" size={size} color={color} /> 
           ),
         }}
       />
