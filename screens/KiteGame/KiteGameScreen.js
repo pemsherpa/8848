@@ -62,7 +62,7 @@ const KiteGameScreen = () => {
     if (running) {
       // Stop game
       setRunning(false);
-      Alert.alert('Game Over', `You earned a discount of ${discount.toFixed(2)}%.`);
+      Alert.alert('Jityo !!!', `You earned a discount of ${discount.toFixed(2)}%.`);
     } else {
       // Start game
       setCountdown(0);
