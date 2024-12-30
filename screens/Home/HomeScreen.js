@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useColorScheme } from "react-native";
-import { CartContext } from "../../context/CartContext"; 
+import { CartContext } from "../../context/CartContext";
 import Alex from "../../assets/images/AlexEatery.png";
 import hotDog from "../../assets/images/hotdog.png";
 import burger from "../../assets/images/burger.png";
@@ -8,6 +8,8 @@ import tandoori from "../../assets/images/tandoori.png";
 import veg from "../../assets/images/veg.png";
 import cake from "../../assets/images/cake.png";
 import offer from "../../assets/images/offer.png";
+import offerVeg from "../../assets/images/offer2.png"; // Veg Mode banner
+import logo from "../../assets/images/logo.png";
 import {
   View,
   Text,
@@ -20,11 +22,21 @@ import {
   Switch,
 } from "react-native";
 
+import { useFonts } from "expo-font";
+
 const HomeScreen = ({ navigation }) => {
-  const scheme = useColorScheme(); 
-  const { addToCart } = useContext(CartContext); 
-  const [vegMode, setVegMode] = useState(false); 
-  const [searchQuery, setSearchQuery] = useState(""); 
+  const scheme = useColorScheme();
+  const { addToCart } = useContext(CartContext);
+  const [vegMode, setVegMode] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const [fontsLoaded] = useFonts({
+    Mario: require("/Users/pemasherpa/Desktop/8848/8848-frontend/screens/KiteGame/TypefaceMarioWorldPixelFilledRegular-rgVMx.ttf"),
+  });
+
+  if (!fontsLoaded) {
+    return null; // Wait for the font to load
+  }
 
   const handleSearchChange = (text) => {
     setSearchQuery(text);
@@ -114,35 +126,29 @@ const HomeScreen = ({ navigation }) => {
     >
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         {/* Header */}
-        <View style={styles.header}>
-          <View>
-            <Text
-              style={[
-                styles.locationText,
-                { color: scheme === "dark" ? "#fff" : "#000" },
-              ]}
-            >
-              Welcome, Foodie :)
-            </Text>
-            <Text
-              style={[
-                styles.subLocationText,
-                { color: scheme === "dark" ? "#ccc" : "#777" },
-              ]}
-            >
-              Ziffy HQ, Panipokhari
-            </Text>
-          </View>
+        <View style={[styles.header, { backgroundColor: "#D32F2F" }]}>
+          <Text
+            style={[
+              styles.title,
+              {
+                color: scheme === "dark" ? "#fff" : "#fff",
+                fontFamily: "Mario",
+              },
+            ]}
+          >
+            Ziffy
+          </Text>
+          <Image source={logo} style={styles.logo} />
         </View>
 
-        {/* Search Bar and Veg Mode Toggle */}
+        {/* Search Bar and Veg Mode */}
         <View style={styles.searchVegContainer}>
           <TextInput
             style={[
               styles.searchInput,
               { backgroundColor: scheme === "dark" ? "#333" : "#f9f9f9" },
             ]}
-            placeholder="Name your mood..."
+            placeholder="Search for your food..."
             value={searchQuery}
             onChangeText={handleSearchChange}
             placeholderTextColor={scheme === "dark" ? "#ccc" : "#888"}
@@ -166,17 +172,27 @@ const HomeScreen = ({ navigation }) => {
         </View>
 
         {/* Promotional Image */}
-        <Image source={offer} style={styles.promotionalImage} />
+        <Image
+          source={vegMode ? offerVeg : offer}
+          style={styles.promotionalImage}
+        />
 
-        {/* Restaurant List */}
+        {/* Line */}
+        <View style={styles.lineContainer}>
+          <View style={styles.line}></View>
+        </View>
+
+        {/* Popular Restaurants Title */}
         <Text
           style={[
             styles.sectionTitle,
             { color: scheme === "dark" ? "#fff" : "#000" },
           ]}
         >
-          ------- Popular Restaurants -------
+          Popular Restaurants
         </Text>
+
+        {/* Restaurant List */}
         <View style={styles.restaurantSection}>
           {filteredRestaurants.map((restaurant) => (
             <View
@@ -216,7 +232,7 @@ const HomeScreen = ({ navigation }) => {
                 </View>
                 <TouchableOpacity
                   style={styles.addButton}
-                  onPress={() => addToCart(restaurant)} 
+                  onPress={() => addToCart(restaurant)}
                 >
                   <Text style={styles.addButtonText}>+</Text>
                 </TouchableOpacity>
@@ -231,28 +247,19 @@ const HomeScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-  },
-  scrollContainer: {
-    paddingBottom: 20,
-  },
+  container: { flex: 1, backgroundColor: "#fff" },
+  scrollContainer: { paddingBottom: 20 },
   header: {
-    padding: 20,
+    paddingTop: 20,
+    paddingBottom: 10,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    paddingHorizontal: 20,
+    height: 100,
   },
-  locationText: {
-    fontSize: 22,
-    fontWeight: "bold",
-    color: "#D32F2F",
-  },
-  subLocationText: {
-    fontSize: 14,
-    color: "#777",
-  },
+  title: { fontSize: 30, fontWeight: "bold" },
+  logo: { width: 90, height: 90 },
   searchVegContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -269,96 +276,25 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderWidth: 1,
     borderColor: "#ddd",
+    marginRight: 10,
   },
-  vegModeContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  vegModeText: {
-    fontSize: 16,
-    fontWeight: "bold",
-    marginRight: 8,
-  },
-  promotionalImage: {
-    width: "100%",
-    height: 180,
-    marginBottom: 20,
-    borderRadius: 10,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginHorizontal: 20,
-    marginBottom: 15,
-    textAlign: "center",
-    color: "#D32F2F",
-  },
-  restaurantSection: {
-    marginHorizontal: 20,
-  },
-  restaurantCard: {
-    backgroundColor: "#fff",
-    borderRadius: 10,
-    overflow: "hidden",
-    marginBottom: 20,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.1,
-    shadowRadius: 5,
-    elevation: 3,
-  },
-  restaurantCardImage: {
-    width: "100%",
-    height: 140,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ddd",
-  },
-  restaurantCardInfo: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 16,
-  },
-  restaurantText: {
-    flex: 1,
-    marginRight: 16,
-  },
-  restaurantName: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#D32F2F",
-  },
-  restaurantDetails: {
-    fontSize: 14,
-    marginBottom: 4,
-    color: "#777",
-  },
-  restaurantMeta: {
-    fontSize: 12,
-    color: "#999",
-  },
-  addButton: {
-    backgroundColor: "#D32F2F",
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  addButtonText: {
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#fff",
-  },
-  restaurantPrice: {
-    paddingHorizontal: 16,
-    paddingBottom: 16,
-    fontSize: 18,
-    fontWeight: "bold",
-    color: "#D32F2F",
-  },
+  vegModeContainer: { flexDirection: "row", alignItems: "center" },
+  vegModeText: { fontSize: 16, fontWeight: "bold", marginRight: 8 },
+  promotionalImage: { width: "100%", height: 300, marginBottom: 20 },
+  lineContainer: { marginHorizontal: 20, marginBottom: 10 },
+  line: { height: 2, backgroundColor: "#D32F2F", marginBottom: 10 },
+  sectionTitle: { fontSize: 24, fontWeight: "bold", marginHorizontal: 20, textAlign: "center", marginBottom: 10 },
+  restaurantSection: { marginHorizontal: 20 },
+  restaurantCard: { borderRadius: 10, marginBottom: 20, borderWidth: 1, borderColor: "#ddd" },
+  restaurantCardImage: { width: "100%", height: 140 },
+  restaurantCardInfo: { flexDirection: "row", padding: 16 },
+  restaurantText: { flex: 1 },
+  restaurantName: { fontSize: 18, fontWeight: "bold" },
+  restaurantDetails: { fontSize: 14 },
+  restaurantMeta: { fontSize: 12 },
+  addButton: { backgroundColor: "#D32F2F", width: 36, height: 36, borderRadius: 18, justifyContent: "center", alignItems: "center" },
+  addButtonText: { fontSize: 20, fontWeight: "bold", color: "#fff" },
+  restaurantPrice: { paddingHorizontal: 16, paddingBottom: 16, fontSize: 18, fontWeight: "bold" },
 });
 
 export default HomeScreen;

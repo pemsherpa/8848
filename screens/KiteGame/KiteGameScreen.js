@@ -50,7 +50,7 @@ const KiteGameScreen = () => {
   useEffect(() => {
     const loadFonts = async () => {
       await Font.loadAsync({
-        'MarioWorld': require('/Users/kashchitbikramthapa/Desktop/88488/frontend/screens/KiteGame/TypefaceMarioWorldPixelFilledRegular-rgVMx.ttf'),
+        'MarioWorld': require('/Users/pemasherpa/Desktop/8848/8848-frontend/assets/images/kite.png'),
       });
       setFontsLoaded(true);
     };
@@ -89,7 +89,7 @@ const KiteGameScreen = () => {
     <TouchableWithoutFeedback onPress={handlePress}>
       <View style={styles.container}>
         <ImageBackground
-          source={require('/Users/kashchitbikramthapa/Desktop/88488/frontend/assets/images/background.png')}
+          source={require('/Users/pemasherpa/Desktop/8848/8848-frontend/assets/images/background.png')}
           style={styles.background}
         >
           {/* Title */}
@@ -108,7 +108,7 @@ const KiteGameScreen = () => {
           {/* Kite animation */}
           <Animated.View style={[styles.kite, kitePosition.getLayout()]}>
             <Image
-              source={require('/Users/kashchitbikramthapa/Desktop/88488/frontend/assets/images/kite.png')}
+              source={require('/Users/pemasherpa/Desktop/8848/8848-frontend/assets/images/kite.png')}
               style={styles.kiteImage}
             />
           </Animated.View>
