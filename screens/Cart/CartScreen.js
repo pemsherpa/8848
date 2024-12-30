@@ -4,7 +4,9 @@ import { ScrollView, View, Text, Button, StyleSheet, SafeAreaView, Alert, Toucha
 const CartScreen = ({ navigation }) => {
   const cartItems = [{ name: 'Hot Dogg', price: 175 }, { name: 'Yummy Burger', price: 200 }];
   const [donate, setDonate] = useState(false);
-  const [coupon, setCoupon] = useState(""); // State for coupon code
+  const [coupon, setCoupon] = useState("");
+  const [useCoins, setUseCoins] = useState(false); // State for using coins
+  const [coinBalance, setCoinBalance] = useState(10); // Example coin balance
 
   // Delivery details (can be dynamically passed or fetched from a user profile)
   const deliveryAddress = {
@@ -15,6 +17,7 @@ const CartScreen = ({ navigation }) => {
   // Calculate the total
   const total = cartItems.reduce((sum, item) => sum + item.price, 0);
   const finalTotal = donate ? total + 1 : total; // Add 1 Rs if donation is selected
+  const discountedTotal = useCoins ? finalTotal - 10 : finalTotal; // Apply 10 Rs discount if coins are used
 
   const handleDonation = () => {
     Alert.alert(
@@ -37,11 +40,39 @@ const CartScreen = ({ navigation }) => {
     setCoupon(text); // Update coupon code
   };
 
+  const handleUseCoins = () => {
+    Alert.alert(
+      "Use Coins for Discount",
+      `You have ${coinBalance} coins. Would you like to use them for a discount?`,
+      [
+        {
+          text: "Yes",
+          onPress: () => {
+            setUseCoins(true);
+            setCoinBalance(0); // Set coin balance to 0 after using coins
+          },
+        },
+        {
+          text: "No",
+          onPress: () => setUseCoins(false),
+        },
+      ]
+    );
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Your Cart</Text>
+
+          {/* Coin Balance */}
+          <View style={styles.coinContainer}>
+            <Text style={styles.coinText}>Coins: {coinBalance}</Text>
+            <TouchableOpacity onPress={handleUseCoins} style={styles.coinButton}>
+              <Text style={styles.coinButtonText}>Use Coins</Text>
+            </TouchableOpacity>
+          </View>
           
           {/* Cart Items */}
           {cartItems.map((item, index) => (
@@ -73,7 +104,7 @@ const CartScreen = ({ navigation }) => {
           {/* Total Price */}
           <View style={styles.totalContainer}>
             <Text style={styles.totalLabel}>Total:</Text>
-            <Text style={styles.totalPrice}>₹{finalTotal}</Text>
+            <Text style={styles.totalPrice}>₹{discountedTotal}</Text>
           </View>
 
           {/* Delivery Details */}
@@ -102,7 +133,7 @@ const CartScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5', // Light background for the screen
+    backgroundColor: '#f5f5f5',
   },
   scrollContainer: {
     paddingHorizontal: 20,
@@ -125,6 +156,26 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     textAlign: 'center',
   },
+  coinContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 15,
+    alignItems: 'center',
+  },
+  coinText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#333',
+  },
+  coinButton: {
+    backgroundColor: '#D14D58',
+    padding: 8,
+    borderRadius: 5,
+  },
+  coinButtonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+  },
   item: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -142,7 +193,7 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   donateButton: {
-    backgroundColor: '#D14D58', // Cherry red background for the donate button
+    backgroundColor: '#D14D58',
     padding: 10,
     borderRadius: 5,
     marginVertical: 10,
@@ -168,7 +219,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   applyButton: {
-    backgroundColor: '#D14D58', // Cherry red background for the apply button
+    backgroundColor: '#D14D58',
     paddingVertical: 10,
     paddingHorizontal: 15,
     borderRadius: 5,
@@ -186,7 +237,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     paddingTop: 10,
     borderTopWidth: 2,
-    borderTopColor: '#D14D58', // Cherry red border for the total section
+    borderTopColor: '#D14D58',
   },
   totalLabel: {
     fontSize: 22,
@@ -224,14 +275,14 @@ const styles = StyleSheet.create({
     borderTopColor: '#ddd',
   },
   paymentButton: {
-    backgroundColor: '#D14D58', // Cherry red background for the payment button
+    backgroundColor: '#D14D58',
     paddingVertical: 12,
     paddingHorizontal: 20,
     borderRadius: 5,
     alignItems: 'center',
   },
   paymentButtonText: {
-    color: '#fff', // White text color
+    color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
   },

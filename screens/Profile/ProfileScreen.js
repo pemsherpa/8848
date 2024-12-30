@@ -16,7 +16,7 @@ const ProfileScreen = () => {
     { code: 'GAME10', discount: '10%', used: false },
     { code: 'NEWYEAR20', discount: '20%', used: true },
   ]);
-  const [coins, setCoins] = useState(56);
+  const [coins, setCoins] = useState(10);
 
   const [showOrderHistory, setShowOrderHistory] = useState(false);
   const [showFavorites, setShowFavorites] = useState(false);
