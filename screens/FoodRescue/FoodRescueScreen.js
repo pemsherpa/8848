@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
 
 const FoodRescueScreen = () => {
@@ -10,16 +10,16 @@ const FoodRescueScreen = () => {
   const [loading, setLoading] = useState(false); // State for loading
   const [showOffers, setShowOffers] = useState(false); // State to control when to show offers
 
-  const handleCheckAvailability = () => {
+  useEffect(() => {
+    // Simulate the delay to load the offers automatically when the screen loads
     setLoading(true); // Start loading
     setMessage(''); // Clear previous messages
 
-    // Simulate a 2-second delay before showing the offers
     setTimeout(() => {
       setLoading(false); // Stop loading
       setShowOffers(true); // Show the offers after the delay
-    }, 2000);
-  };
+    }, 2000); // Delay of 2 seconds
+  }, []); // Empty dependency array ensures this runs once when the screen loads
 
   const handleStealOffer = (index) => {
     setLoading(true); // Set loading to true while processing the steal
@@ -65,8 +65,6 @@ const FoodRescueScreen = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Food Rescue Mission</Text>
       <Text style={styles.description}>Receive cheaper orders when food is canceled within your radius!</Text>
-
-      <Button title="Check Availability" onPress={handleCheckAvailability} />
 
       {loading ? (
         <ActivityIndicator size="large" color="#D32F2F" style={styles.loading} />

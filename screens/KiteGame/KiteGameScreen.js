@@ -63,7 +63,7 @@ const KiteGameScreen = () => {
 
   return (
     <View style={styles.container}>
-      <ImageBackground source={{ uri: 'your_background_image_url' }} style={styles.background}>
+      <ImageBackground source={require('../../assets/images/background.png')} style={styles.background}>
         <View style={styles.gameContainer}>
           <Text style={styles.title}>Kite Game</Text>
           <Text>Enjoy the kite flying game!</Text>
@@ -92,7 +92,7 @@ const KiteGameScreen = () => {
                 ],
               },
             ]}>
-            <Image source={{ uri: 'your_kite_image_url' }} style={styles.kiteImage} />
+            <Image source={require('../../assets/images/kite.png')} style={styles.kiteImage} />
           </Animated.View>
           {gameStarted ? (
             <>
@@ -133,8 +133,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   kiteImage: {
-    width: 100,
-    height: 100,
+    width: 60, // Adjusted width for smaller kite
+    height: 60, // Adjusted height for smaller kite
   },
   kiteCutText: {
     color: 'red',
