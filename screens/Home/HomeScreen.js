@@ -40,7 +40,7 @@ const HomeScreen = ({ navigation }) => {
       time: "15 mins",
       distance: "1 km",
       image: Alex, // Local image reference
-      isVeg: false, // Veg
+      isVeg: false, // Non-Veg
     },
     {
       id: 2,
@@ -80,7 +80,7 @@ const HomeScreen = ({ navigation }) => {
       time: "20 mins",
       distance: "1.2 km",
       image: tandoori, // Placeholder image
-      isVeg: false, // Veg
+      isVeg: false, // Non-Veg
     },
     {
       id: 6,
@@ -90,7 +90,7 @@ const HomeScreen = ({ navigation }) => {
       time: "45 mins",
       distance: "4 km",
       image: veg, // Placeholder image
-      isVeg: true, // Non-Veg
+      isVeg: true, // Veg
     },
   ];
 
@@ -104,30 +104,25 @@ const HomeScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: scheme === 'dark' ? '#121212' : '#fff' }]}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
-        {/* Top Banner Image */}
-        <Image
-          source={{ uri: "https://via.placeholder.com/600x200?text=Food+Delivery+App" }}
-          style={styles.bannerImage}
-        />
-
         {/* Header */}
         <View style={styles.header}>
           <View>
-            <Text style={[styles.locationText, { color: scheme === 'dark' ? '#fff' : '#000' }]}>Home</Text>
+            <Text style={[styles.locationText, { color: scheme === 'dark' ? '#fff' : '#000' }]}>Welcome, Foodie :)</Text>
+  
             <Text style={[styles.subLocationText, { color: scheme === 'dark' ? '#ccc' : '#777' }]}>Ziffy hq, Panipokhari</Text>
           </View>
           <View style={styles.icons}>
             <TouchableOpacity onPress={() => navigation.navigate("Cart")}>
-              <Text style={[styles.iconText, { color: scheme === 'dark' ? '#fff' : '#000' }]}>🛒</Text>
+              <Text style={[styles.iconText, { color: scheme === 'dark' ? '#fff' : '#000' }]}></Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
-              <Text style={[styles.iconText, { color: scheme === 'dark' ? '#fff' : '#000' }]}>👤</Text>
+              <Text style={[styles.iconText, { color: scheme === 'dark' ? '#fff' : '#000' }]}></Text>
             </TouchableOpacity>
           </View>
         </View>
 
-        {/* Search Bar */}
-        <View style={styles.searchContainer}>
+        {/* Search Bar and Veg Mode Toggle */}
+        <View style={styles.searchVegContainer}>
           <TextInput
             style={[styles.searchInput, { backgroundColor: scheme === 'dark' ? '#333' : '#f9f9f9' }]}
             placeholder="Name your mood..."
@@ -135,17 +130,15 @@ const HomeScreen = ({ navigation }) => {
             onChangeText={handleSearchChange}
             placeholderTextColor={scheme === 'dark' ? '#ccc' : '#888'}
           />
-        </View>
-
-        {/* Veg Mode Toggle */}
-        <View style={styles.vegModeContainer}>
-          <Text style={[styles.vegModeText, { color: scheme === 'dark' ? '#fff' : '#000' }]}>Veg Mode</Text>
-          <Switch
-            value={vegMode}
-            onValueChange={toggleVegMode}
-            thumbColor={vegMode ? "#4caf50" : "#bbb"}
-            trackColor={{ false: "#ddd", true: "#81c784" }}
-          />
+          <View style={styles.vegModeContainer}>
+            <Text style={[styles.vegModeText, { color: scheme === 'dark' ? '#fff' : '#000' }]}>Veg Mode</Text>
+            <Switch
+              value={vegMode}
+              onValueChange={toggleVegMode}
+              thumbColor={vegMode ? "#4caf50" : "#bbb"}
+              trackColor={{ false: "#ddd", true: "#81c784" }}
+            />
+          </View>
         </View>
 
         {/* Promotional Image */}
@@ -188,11 +181,6 @@ const styles = StyleSheet.create({
   scrollContainer: {
     paddingBottom: 20,
   },
-  bannerImage: {
-    width: "100%",
-    height: 200,
-    marginBottom: 20,
-  },
   header: {
     padding: 16,
     flexDirection: "row",
@@ -213,30 +201,29 @@ const styles = StyleSheet.create({
   iconText: {
     fontSize: 20,
   },
-  searchContainer: {
-    flexDirection: "row",
+  searchVegContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     marginHorizontal: 16,
     marginBottom: 16,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    borderRadius: 8,
-    padding: 8,
+    justifyContent: 'space-between',
   },
   searchInput: {
     flex: 1,
     fontSize: 16,
     paddingLeft: 8,
+    marginRight: 8, // Space between search bar and veg mode
+    borderRadius: 8,
+    padding: 8,
   },
   vegModeContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginHorizontal: 16,
-    marginBottom: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   vegModeText: {
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: 'bold',
+    marginRight: 8,
   },
   promotionalImage: {
     width: "100%",

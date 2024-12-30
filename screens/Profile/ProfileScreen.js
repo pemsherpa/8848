@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Image } from 'react-native';
+import Icon from 'react-native-vector-icons/MaterialIcons'; // Importing icon library
 
 const ProfileScreen = () => {
   const [orderHistory] = useState([
@@ -16,7 +17,6 @@ const ProfileScreen = () => {
     { code: 'NEWYEAR20', discount: '20%', used: true },
   ]);
 
-  // States for toggling visibility
   const [showOrderHistory, setShowOrderHistory] = useState(false);
   const [showFavorites, setShowFavorites] = useState(false);
   const [showAddress, setShowAddress] = useState(false);
@@ -26,25 +26,26 @@ const ProfileScreen = () => {
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.profileContainer}>
-          {/* Profile Circle */}
           <Image
             source={{ uri: 'https://www.w3schools.com/w3images/avatar2.png' }}
             style={styles.profileImage}
           />
-          {/* User Details */}
           <Text style={styles.userName}>John Doe</Text>
           <Text style={styles.userEmail}>john.doe@example.com</Text>
-          <Text style={styles.userPhone}>+1 234 567 890</Text>
+          <Text style={styles.userPhone}>+977 9841753555</Text>
         </View>
 
         {/* My Favorites Section */}
         <TouchableOpacity style={styles.section} onPress={() => setShowFavorites(!showFavorites)}>
+          <Icon name="favorite" size={24} color="#4caf50" style={styles.icon} />
           <Text style={styles.sectionTitle}>My Favorites</Text>
         </TouchableOpacity>
         {showFavorites && (
           <View style={styles.dropdown}>
             {favorites.map((favorite, index) => (
-              <Text key={index} style={styles.sectionContent}>{favorite.name} - ₹{favorite.price}</Text>
+              <Text key={index} style={styles.sectionContent}>
+                {favorite.name} - ₹{favorite.price}
+              </Text>
             ))}
           </View>
         )}
@@ -53,6 +54,7 @@ const ProfileScreen = () => {
 
         {/* Order History Section */}
         <TouchableOpacity style={styles.section} onPress={() => setShowOrderHistory(!showOrderHistory)}>
+          <Icon name="history" size={24} color="#4caf50" style={styles.icon} />
           <Text style={styles.sectionTitle}>Order History</Text>
         </TouchableOpacity>
         {showOrderHistory &&
@@ -69,6 +71,7 @@ const ProfileScreen = () => {
 
         {/* Manage Delivery Address Section */}
         <TouchableOpacity style={styles.section} onPress={() => setShowAddress(!showAddress)}>
+          <Icon name="location-on" size={24} color="#4caf50" style={styles.icon} />
           <Text style={styles.sectionTitle}>Manage Delivery Address</Text>
         </TouchableOpacity>
         {showAddress && <Text style={styles.sectionContent}>{address}</Text>}
@@ -77,6 +80,7 @@ const ProfileScreen = () => {
 
         {/* Voucher Vault Section */}
         <TouchableOpacity style={styles.section} onPress={() => setShowCoupons(!showCoupons)}>
+          <Icon name="redeem" size={24} color="#4caf50" style={styles.icon} />
           <Text style={styles.sectionTitle}>Voucher Vault</Text>
         </TouchableOpacity>
         {showCoupons &&
@@ -93,13 +97,15 @@ const ProfileScreen = () => {
 
       {/* Buttons at the bottom */}
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Edit Profile</Text>
-        </TouchableOpacity>
+        <View style={styles.buttonRow}>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Edit Profile</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Logout</Text>
-        </TouchableOpacity>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Logout</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -141,13 +147,17 @@ const styles = StyleSheet.create({
   },
   section: {
     marginVertical: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  icon: {
+    marginRight: 10,
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 8,
     color: '#333',
-    textDecorationLine: 'underline',
   },
   sectionContent: {
     fontSize: 16,
@@ -193,13 +203,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-end',
   },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
+  },
   button: {
     backgroundColor: '#D32F2F',
     paddingVertical: 8,
     paddingHorizontal: 25,
-    borderRadius: 5,
+    borderRadius: 25,
     marginVertical: 10,
-    width: '80%',
+    width: '45%',
     alignItems: 'center',
   },
   buttonText: {
